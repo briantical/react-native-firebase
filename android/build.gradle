@@ -16,7 +16,7 @@ buildscript {
     }
 
     dependencies {
-      classpath("com.android.tools.build:gradle:3.5.2")
+      classpath("com.android.tools.build:gradle:3.5.4")
     }
   }
 }
@@ -182,7 +182,8 @@ dependencies {
   // Cloud Firestore
   compileOnly "com.google.firebase:firebase-firestore:19.0.2"
   // Cloud Messaging / FCM
-  compileOnly "com.google.firebase:firebase-messaging:18.0.0"
+  compileOnly "com.google.firebase:firebase-messaging:23.1.2"
+  compileOnly "com.google.firebase:firebase-iid:21.1.0"
   // Crashlytics
   compileOnly('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
     transitive = true
