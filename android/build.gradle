@@ -183,7 +183,7 @@ dependencies {
   compileOnly "com.google.firebase:firebase-firestore:19.0.2"
   // Cloud Messaging / FCM
   compileOnly "com.google.firebase:firebase-messaging:21.1.0"
-  compileOnly "com.google.firebase:firebase-iid:21.1.0"
+  // compileOnly "com.google.firebase:firebase-iid:21.1.0"
   // Crashlytics
   compileOnly('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
     transitive = true
