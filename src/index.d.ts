@@ -129,7 +129,10 @@ declare module 'react-native-firebase' {
 
     firestore(): RNFirebase.firestore.Firestore;
 
-    functions(appOrRegion?: string| App, region?: string): RNFirebase.functions.Functions;
+    functions(
+      appOrRegion?: string | App,
+      region?: string
+    ): RNFirebase.functions.Functions;
 
     iid(): RNFirebase.iid.InstanceId;
 
@@ -1216,6 +1219,25 @@ declare module 'react-native-firebase' {
       }
     }
 
+    /**
+     * Options for `getToken()`, `deleteToken()`
+     */
+    interface TokenOptions {
+      /**
+       * The app name of the FirebaseApp instance.
+       *
+       * @platform android Android
+       */
+      appName?: string;
+
+      /**
+       * The senderID for a particular Firebase project.
+       *
+       * @platform ios iOS
+       */
+      senderId?: string;
+    }
+
     namespace messaging {
       interface Messaging {
         /**
@@ -1227,9 +1249,9 @@ declare module 'react-native-firebase' {
         /**
          * Returns the devices FCM token.
          */
-        getToken(): Promise<string>;
+        getToken(options?: TokenOptions): Promise<string>;
 
-        deleteToken(authorizedEntity?: string, scope?: string): Promise<void>;
+        deleteToken(options?: TokenOptions): Promise<void>;
 
         /**
          * On a new message,
@@ -2025,12 +2047,12 @@ declare module 'react-native-firebase' {
 
     namespace crashlytics {
       type customError = {
-        fileName:string,
-        className?:string,
-        functionName?:string,
-        lineNumber?:number,
-        additional?:Object
-      }
+        fileName: string;
+        className?: string;
+        functionName?: string;
+        lineNumber?: number;
+        additional?: Object;
+      };
       interface Crashlytics {
         /**
          * Forces a crash. Useful for testing your application is set up correctly.
@@ -2050,7 +2072,11 @@ declare module 'react-native-firebase' {
         /**
          * Logs a custom non fatal exception.
          */
-        recordCustomError(name:string, message:string, stack?:customError[]):void;
+        recordCustomError(
+          name: string,
+          message: string,
+          stack?: customError[]
+        ): void;
 
         /**
          * Set a boolean value to show alongside any subsequent crash reports.
@@ -2313,7 +2339,7 @@ declare module 'react-native-firebase' {
          * constructor overload:
          * See https://github.com/invertase/react-native-firebase-docs/blob/master/docs/functions/reference/functions.md
          */
-        (appOrRegion?: string| App, region?: string): Functions
+        (appOrRegion?: string | App, region?: string): Functions;
       }
 
       interface HttpsError extends Error {

@@ -27,6 +27,22 @@ type OnTokenRefreshObserver = {
   next: OnTokenRefresh,
 };
 
+type TokenOptions = {
+  /**
+   * The app name of the FirebaseApp instance.
+   *
+   * @platform android Android
+   */
+  appName?: string,
+
+  /**
+   * The senderID for a particular Firebase project.
+   *
+   * @platform ios iOS
+   */
+  senderId?: string,
+};
+
 const NATIVE_EVENTS = [
   'messaging_message_received',
   'messaging_token_refreshed',
@@ -34,6 +50,14 @@ const NATIVE_EVENTS = [
 
 export const MODULE_NAME = 'RNFirebaseMessaging';
 export const NAMESPACE = 'messaging';
+
+export function isUndefined(value: any) {
+  return typeof value === 'undefined';
+}
+
+export function isString(value: any) {
+  return typeof value === 'string';
+}
 
 /**
  * @class Messaging
@@ -79,12 +103,42 @@ export default class Messaging extends ModuleBase {
     return this._ios;
   }
 
-  getToken(): Promise<string> {
-    return getNativeModule(this).getToken();
+  getToken({ appName, senderId }: TokenOptions = {}) {
+    if (!isUndefined(appName) && !isString(appName)) {
+      throw new Error(
+        "firebase.messaging().getToken(*) 'projectId' expected a string."
+      );
+    }
+
+    if (!isUndefined(senderId) && !isString(senderId)) {
+      throw new Error(
+        "firebase.messaging().getToken(*) 'senderId' expected a string."
+      );
+    }
+
+    return getNativeModule(this).getToken(
+      appName || this.app.name,
+      senderId || this.app.options.messagingSenderId
+    );
   }
 
-  deleteToken(): Promise<void> {
-    return getNativeModule(this).deleteToken();
+  deleteToken({ appName, senderId }: TokenOptions = {}) {
+    if (!isUndefined(appName) && !isString(appName)) {
+      throw new Error(
+        "firebase.messaging().deleteToken(*) 'projectId' expected a string."
+      );
+    }
+
+    if (!isUndefined(senderId) && !isString(senderId)) {
+      throw new Error(
+        "firebase.messaging().deleteToken(*) 'senderId' expected a string."
+      );
+    }
+
+    return getNativeModule(this).deleteToken(
+      appName || this.app.name,
+      senderId || this.app.options.messagingSenderId
+    );
   }
 
   onMessage(nextOrObserver: OnMessage | OnMessageObserver): () => any {
