@@ -35,6 +35,10 @@ const NATIVE_EVENTS = [
 export const MODULE_NAME = 'RNFirebaseMessaging';
 export const NAMESPACE = 'messaging';
 
+export function isUndefined(value) {
+  return typeof value === 'undefined';
+}
+
 /**
  * @class Messaging
  */
@@ -79,12 +83,35 @@ export default class Messaging extends ModuleBase {
     return this._ios;
   }
 
-  getToken(): Promise<string> {
-    return getNativeModule(this).getToken();
+
+  getToken({ appName, senderId } = {}) {
+      if (!isUndefined(appName) && !isString(appName)) {
+        throw new Error("firebase.messaging().getToken(*) 'projectId' expected a string.");
+      }
+  
+      if (!isUndefined(senderId) && !isString(senderId)) {
+        throw new Error("firebase.messaging().getToken(*) 'senderId' expected a string.");
+      }
+  
+      return this.native.getToken(
+        appName || this.app.name,
+        senderId || this.app.options.messagingSenderId,
+      );
   }
 
-  deleteToken(): Promise<void> {
-    return getNativeModule(this).deleteToken();
+  deleteToken({appName, senderId} = {}) {
+    if (!isUndefined(appName) && !isString(appName)) {
+      throw new Error("firebase.messaging().deleteToken(*) 'projectId' expected a string.");
+    }
+
+    if (!isUndefined(senderId) && !isString(senderId)) {
+      throw new Error("firebase.messaging().deleteToken(*) 'senderId' expected a string.");
+    }
+
+    return this.native.deleteToken(
+      appName || this.app.name,
+      senderId || this.app.options.messagingSenderId,
+    );
   }
 
   onMessage(nextOrObserver: OnMessage | OnMessageObserver): () => any {
