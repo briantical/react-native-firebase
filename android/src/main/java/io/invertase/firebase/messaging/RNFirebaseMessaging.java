@@ -54,29 +54,38 @@ public class RNFirebaseMessaging extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void getToken(Promise promise) {
-    try {
-      String senderId = FirebaseApp.getInstance().getOptions().getGcmSenderId();
-      String token = FirebaseInstanceId
-        .getInstance()
-        .getToken(senderId, FirebaseMessaging.INSTANCE_ID_SCOPE);
-      promise.resolve(token);
-    } catch (Throwable e) {
-      e.printStackTrace();
-      promise.reject("messaging/fcm-token-error", e.getMessage());
-    }
+  public void getToken(String appName, String senderId, Promise promise) {
+    FirebaseMessaging messagingInstance = FirebaseApp.getInstance(appName).get(FirebaseMessaging.class);
+    Tasks.call(getExecutor(), () -> Tasks.await(messagingInstance.getToken()))
+        .addOnCompleteListener(
+            task -> {
+              if (task.isSuccessful()) {
+                promise.resolve(task.getResult());
+              } else {
+                rejectPromiseWithExceptionMap(promise, task.getException());
+              }
+            }
+        );
   }
 
   @ReactMethod
-  public void deleteToken(Promise promise) {
-    try {
-      String senderId = FirebaseApp.getInstance().getOptions().getGcmSenderId();
-      FirebaseInstanceId.getInstance().deleteToken(senderId, FirebaseMessaging.INSTANCE_ID_SCOPE);
-      promise.resolve(null);
-    } catch (Throwable e) {
-      e.printStackTrace();
-      promise.reject("messaging/fcm-token-error", e.getMessage());
-    }
+  public void deleteToken(String appName, String senderId, Promise promise) {
+    FirebaseMessaging messagingInstance = FirebaseApp.getInstance(appName).get(FirebaseMessaging.class);
+    Tasks.call(
+        getExecutor(),
+        () -> {
+          Tasks.await(FirebaseMessaging.getInstance().deleteToken());
+          Tasks.await(messagingInstance.deleteToken());
+          return null;
+        })
+    .addOnCompleteListener(
+        task -> {
+          if (task.isSuccessful()) {
+            promise.resolve(task.getResult());
+          } else {
+            rejectPromiseWithExceptionMap(promise, task.getException());
+          }
+        });
   }
 
   @ReactMethod
