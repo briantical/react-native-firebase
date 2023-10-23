@@ -67,7 +67,6 @@ public class RNFirebaseMessaging extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void deleteToken(String appName, String senderId, Promise promise) {
-    FirebaseMessaging messagingInstance = FirebaseApp.getInstance(appName).get(FirebaseMessaging.class);
     try{
       FirebaseMessaging messagingInstance = FirebaseApp.getInstance(appName).get(FirebaseMessaging.class);
       FirebaseMessaging.getInstance().deleteToken();
