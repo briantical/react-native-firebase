@@ -153,7 +153,7 @@ dependencies {
 
   // Required dependencies
   //noinspection GradleCompatible
-  compileOnly "com.google.firebase:firebase-core:16.0.9"
+  compileOnly "com.google.firebase:firebase-core:22.0.0"
   compileOnly "com.google.android.gms:play-services-base:16.1.0"
 
   /* -------------------------
