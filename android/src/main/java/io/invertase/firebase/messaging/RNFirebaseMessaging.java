@@ -57,7 +57,7 @@ public class RNFirebaseMessaging extends ReactContextBaseJavaModule {
   public void getToken(String appName, String senderId, Promise promise) {
     try{
       FirebaseMessaging messagingInstance = FirebaseApp.getInstance(appName).get(FirebaseMessaging.class);
-      token = messagingInstance.getToken();
+      String token = messagingInstance.getToken();
       promise.resolve(token);
     }catch(Throwable e){
       e.printStackTrace();
