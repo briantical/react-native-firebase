@@ -1216,6 +1216,25 @@ declare module 'react-native-firebase' {
       }
     }
 
+    /**
+     * Options for `getToken()`, `deleteToken()`
+     */
+    export interface TokenOptions {
+      /**
+       * The app name of the FirebaseApp instance.
+       *
+       * @platform android Android
+       */
+      appName?: string;
+
+      /**
+       * The senderID for a particular Firebase project.
+       *
+       * @platform ios iOS
+       */
+      senderId?: string;
+    }
+
     namespace messaging {
       interface Messaging {
         /**
@@ -1227,9 +1246,9 @@ declare module 'react-native-firebase' {
         /**
          * Returns the devices FCM token.
          */
-        getToken(): Promise<string>;
+        getToken(options?: TokenOptions): Promise<string>;
 
-        deleteToken(authorizedEntity?: string, scope?: string): Promise<void>;
+        deleteToken(options?: TokenOptions): Promise<void>;
 
         /**
          * On a new message,
