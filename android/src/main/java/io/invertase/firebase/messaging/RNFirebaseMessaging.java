@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -57,8 +58,24 @@ public class RNFirebaseMessaging extends ReactContextBaseJavaModule {
   public void getToken(String appName, String senderId, Promise promise) {
     try{
       FirebaseMessaging messagingInstance = FirebaseApp.getInstance(appName).get(FirebaseMessaging.class);
-      String token = messagingInstance.getToken();
-      promise.resolve(token);
+      messagingInstance.getToken()
+      .addOnCompleteListener(new OnCompleteListener<String>() {
+        @Override
+        public void onComplete(@NonNull Task<String> task) {
+          if (!task.isSuccessful()) {
+            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+            return;
+          }
+
+          // Get new FCM registration token
+          String token = task.getResult();
+
+          // Log and toast
+          // String msg = getString(R.string.msg_token_fmt, token);
+          promise.resolve(token);
+        }
+    });
+      
     }catch(Throwable e){
       e.printStackTrace();
       promise.reject("messaging/fcm-token-error", e.getMessage());
