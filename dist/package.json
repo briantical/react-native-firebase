@@ -120,7 +120,8 @@
   },
   "lint-staged": {
     "*": [
-      "npm run build"
+      "npm run build",
+      "git add"
     ],
     "src/**/*.js": [
       "eslint --fix",
