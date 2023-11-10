@@ -3,8 +3,8 @@
   "version": "5.6.0a",
   "author": "Invertase <oss@invertase.io> (http://invertase.io)",
   "description": "A well tested, feature rich Firebase implementation for React Native, supporting iOS & Android. Individual module support for Admob, Analytics, Auth, Crash Reporting, Cloud Firestore, Database, Dynamic Links, Functions, Messaging (FCM), Remote Config, Storage and more.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "build": "genversion src/version.js && yarn run build-src",
     "build-src": "cross-env BABEL_ENV=publish babel src -d dist --ignore __tests__ --copy-files",
@@ -119,9 +119,6 @@
     "url": "https://opencollective.com/react-native-firebase"
   },
   "lint-staged": {
-    "*": [
-      "npm run build"
-    ],
     "src/**/*.js": [
       "eslint --fix",
       "git add"

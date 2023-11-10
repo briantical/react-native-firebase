@@ -76,6 +76,7 @@ local.properties
 **/ios/Pods/**
 **/ios/ReactNativeFirebaseDemo.xcworkspace/
 .nyc_output
+dist
 ios.coverage.json
 **/android/.project
 **/android/.classpath
